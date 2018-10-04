@@ -6,6 +6,7 @@ To update FDL-3 firmware you need the following:
 [XLoader](http://xloader.russemotto.com/)<br/>
 Windows computer. (There are ways to do this on a mac but I have not found a quick and easy utility to do so)<br/>
 <br/>
+####Flashing your FDL-3</br>
 -Remove the rear blaster cap and Microview. <br/>
 -Insert the Microview programmer into the USB port on your Windows computer. <br/>
 -Insert the Microview from your blaster into the programmer paying careful attention to orientation.<br/>
@@ -21,6 +22,7 @@ Windows computer. (There are ways to do this on a mac but I have not found a qui
 -Remove the Microview from the programmer and put it back in your FDL-3.<br/>
 -Replace the rear cap and you're good to go.<br/>
 <br/>
+####Clearing your settings</br>
 -It's not a bad idea to wipe your settings between each firmware update.<br/>
 -To do this press and hold the control knob while turning on the blaster.<br/>
 -The FDL-3 splash screen will show then the screen will go blank.<br/>
