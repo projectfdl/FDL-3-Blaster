@@ -7,6 +7,7 @@ To update FDL-3 firmware you need the following:
 Windows computer. (There are ways to do this on a mac but I have not found a quick and easy utility to do so)<br/>
 <br/>
 #### Flashing your FDL-3</br>
+#### Caution!!! Flash your blaster at your own risk. Doing so is not covered by any sort of warranty. If you are not comfortable or 100% confident, consider sending your Microview to Project FDL to flash.</br>
 -Remove the rear blaster cap and Microview. <br/>
 -Insert the Microview programmer into the USB port on your Windows computer. <br/>
 -Insert the Microview from your blaster into the programmer paying careful attention to orientation.<br/>
