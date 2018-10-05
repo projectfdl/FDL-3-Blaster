@@ -14,7 +14,7 @@ Windows computer. (There are ways to do this on a mac but I have not found a qui
 -The screen on your microview should point up with the USB connector facing left. There is a picture indication on the board as well.<br/>
 -Run XLoader. <br/>
 -Choose your desired firmware hex file. <br/>
--Select the ATmega328 option under device.<br/>
+-Select the Duemilanove/Nano(ATmega328) option under device.<br/>
 -Choose the com port of your USB programmer.<br/>
 -Set baud rate to 115200.<br/>
 -Click upload.<br/>
