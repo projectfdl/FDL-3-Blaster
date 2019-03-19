@@ -313,10 +313,21 @@ void loadSettings(int presetNumber){
   int readBurst = constrain(currentSettings.burstCount, 1, 4);
   burstMenuIndex = readBurst - 1;
   
-  minSpinupValue = currentSettings.minSpinupValue;
-  maxSpinupValue = currentSettings.maxSpinupValue;
-  minSpeedValue = currentSettings.minSpeed;
-  maxSpeedValue = currentSettings.maxSpeed;
+  if (!speedLocked) {
+    minSpinupValue = currentSettings.minSpinupValue;
+    maxSpinupValue = currentSettings.maxSpinupValue;
+    minSpeedValue = currentSettings.minSpeed;
+    maxSpeedValue = currentSettings.maxSpeed;
+  }
+  
+  if (speedValue > maxSpeedValue) {
+    speedValue = maxSpeedValue;
+  }
+  
+  if (speedValue < minSpeedValue) {
+    speedValue = minSpeeedValue;
+  }
+  
   brightnessValue = currentSettings.brightness;
   
   spindownRate = currentSettings.spinDown;
