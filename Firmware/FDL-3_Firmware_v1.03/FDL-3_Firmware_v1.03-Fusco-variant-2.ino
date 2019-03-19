@@ -190,7 +190,7 @@ void setup() {
   
   renderScreen(true);
   //delay(50);
-  startUpBeeps();
+  imperialMarchBeeps();
 
 
   if(lockOn()){
@@ -211,6 +211,46 @@ void startUpBeeps(){
   delay(110);
   tone(6, 2000, 60);
 }
+
+void imperialMarchBeeps(){
+  tone(6, 392, 400);
+  delay(100);
+  tone(6, 392, 400);
+  delay(100);
+  tone(6, 392, 400);
+  delay(100);
+  tone(6, 311, 275);
+  delay(100);
+  tone(6, 466, 25);
+  delay(100);
+  tone(6, 392, 400);
+  delay(100);
+  tone(6, 311, 275);
+  delay(100);
+  tone(6, 466, 25);
+  delay(100);
+  tone(6, 392, 900);
+  delay(100);
+  tone(6, 587, 400);
+  delay(100);
+  tone(6, 587, 400);
+  delay(100);
+  tone(6, 587, 400);
+  delay(100);
+  tone(6, 622, 275);
+  delay(100);
+  tone(6, 466, 25);
+  delay(100);
+  tone(6, 370, 400);
+  delay(100);
+  tone(6, 311, 275);
+  delay(100);
+  tone(6, 466, 25);
+  delay(100);
+  tone(6, 392, 900);
+  delay(100);
+}
+  
 
 
 void loop() {
