@@ -10,13 +10,14 @@ Choose which flywheel to print based off your motor. We ship bundles and blaster
 
 Flywheels must be printed balanced and strong but also light weight. Here are a few suggestions for how to do so. 
 
-We use common 0.4mm nozzles at 0.2mm layer heights. If using a different size, adjust accordingly.
-0.2mm layer or lower layer height
-PLA is ok but succeptible to warping under heavy or summer time use
-PETG can be weak and shatter if not printed properly. It's higher heat resistance can help warping but use it at your own risk to avoid shattered flywheels, ouch.
-Use 3-4 perimeters. 3 can lead to lighter wheels but 4 will be reliably stronger. We use 4.
-Infill should be roughly 20%, rectilinear, rotated vertical/horizontal instead of the typical 45 degrees and centered on the wheel.
-Layer seams (called different things in different slicers) should be randomized to avoid a heavy side where all the seams line up. Slicers will typically hide these seams in corners. We want them scattered randomly. A "zitted" appearance is normal and can help grip on darts.
-Not all flywheels printed in this manner will be perfect. A propeller balancer can be used to balance wheels or you can print multiples and choose the best two.
+- We use common 0.4mm nozzles at 0.2mm layer heights. If using a different size, adjust accordingly.
+- 0.2mm layer or lower layer height
+- PLA is ok but susceptible to warping under heavy or summer time use
+- PETG can be weak and shatter if not printed properly. It's higher heat resistance can help warping but use it at your own risk to avoid shattered flywheels, ouch.
+- Use 3-4 perimeters. 3 can lead to lighter wheels but 4 will be reliably stronger. We use 4.
+- Infill should be roughly 20%, rectilinear, rotated vertical/horizontal instead of the typical 45 degrees and centered on the wheel.
+- Layer seams (called different things in different slicers) should be randomized to avoid a heavy side where all the seams line up. Slicers will typically hide these seams in corners. We want them scattered randomly. A "zitted" appearance is normal and can help grip on darts.
+- Target roughly 10 gram weight per wheel. Heavier have more inertia and could potentially perform better but are more susceptible to imbalance and sluggish feel. Lighter are less susceptible to imbalance and quieter but provide less momentum.
+- Not all flywheels printed in this manner will be perfect. A propeller balancer can be used to balance wheels or you can print multiples and choose the best two.
 
 Good luck and make on!
