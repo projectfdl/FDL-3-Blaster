@@ -4,7 +4,7 @@
 void renderScreen(){
   
   int contrastValue = map(currStSettings.brightness, 0, 100, 0, 255);
-  uView.contrast(contrastValue);
+ //PARTY  uView.contrast(contrastValue);
   
   renderVoltMeter();
     
@@ -102,7 +102,7 @@ void renderScreen(){
           liveKnobScrollMode = true;
         }
         
-        uView.clear(PAGE);
+        uView.clearDisplay();
         firstMenuRun = true;
         myEnc.write(0);
       }
@@ -115,7 +115,7 @@ void renderScreen(){
         if(presetButtonDown() == presetButton){
           presetButtonAction(presetButton);
           menuBtnWasDown = true;
-          uView.clear(PAGE);
+          uView.clearDisplay();
           firstMenuRun = true;
           myEnc.write(0);
         }

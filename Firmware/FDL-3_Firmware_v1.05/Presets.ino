@@ -108,7 +108,7 @@ void loadPreset(byte presetIndex){
 }
 
 void writeDefaultSettings(){  
-  uView.clear(PAGE);
+  uView.clearDisplay();
   uView.setCursor(0,0);
   uView.print("Updating");
   uView.setCursor(0,14);
@@ -143,6 +143,6 @@ void writeDefaultSettings(){
   toneAlt(2000, 200);
   delay(100);
   
-  uView.clear(PAGE);
+  uView.clearDisplay();
   uView.display();
 }

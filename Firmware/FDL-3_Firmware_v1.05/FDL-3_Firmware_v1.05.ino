@@ -1,28 +1,37 @@
 /*
  FDL-3 Firmware v1.05 by Project FDL
-
+                v1.05.1 by Mathew3000
  Libraries used:
  
- MicroView Arduino Library
- Copyright (C) 2014 GeekAmmo
+ Adafruit SSD1306 Library
+ http://www.adafruit.com/category/63_98
  
  Encoder Library, for measuring quadrature encoded signals
  http://www.pjrc.com/teensy/td_libs_Encoder.html
  Copyright (c) 2011,2013 PJRC.COM, LLC - Paul Stoffregen <paul@pjrc.com>
 */
 
-#include <MicroView.h>
+#include <SPI.h>
+#include <Wire.h>
 #include <Encoder.h>
+#include <Adafruit_SSD1306.h>
 #include <EEPROM.h>
 #include <Servo.h>
 
-const byte versionNumber = 105;
+const byte versionNumber = 1051;
 const String splashText = "FDL-3"; //can be two lines split with space
 
 Servo flywheelESC; 
 Encoder myEnc(2, 3); 
-MicroViewWidget *mainGauge;
-MicroViewWidget *voltMeter;
+//MicroViewWidget *mainGauge;
+//MicroViewWidget *voltMeter;
+//PARTY
+
+// OLED DEF
+#define OLED_DC     9
+#define OLED_CS     7
+#define OLED_RS     8
+Adafruit_SSD1306 uView(128,64, &SPI, OLED_DC, OLED_RS, OLED_CS);
 
 #define NOTHROTTLE 1000
 #define MINTHROTTLE 1285
@@ -128,7 +137,7 @@ void setup() {
   flywheelESC.writeMicroseconds(0);  
 
   uView.begin();// start MicroView
-  uView.clear(PAGE);
+  uView.clearDisplay();
   uView.display();
 
   pinMode(voltMeterPin, INPUT);
@@ -154,11 +163,11 @@ void setup() {
     clearLockRoutine();
   }
 
-  mainGauge = new MicroViewGauge(16, 30, 0, 100, WIDGETSTYLE0 + WIDGETNOVALUE);
-  voltMeter = new MicroViewSlider(56, 14, 106, 126, WIDGETSTYLE2 + WIDGETNOVALUE);
-
-  mainGauge->reDraw();
-  voltMeter->reDraw();
+  //PARTY
+  //mainGauge = new MicroViewGauge(16, 30, 0, 100, WIDGETSTYLE0 + WIDGETNOVALUE);
+  //voltMeter = new MicroViewSlider(56, 14, 106, 126, WIDGETSTYLE2 + WIDGETNOVALUE);
+  //mainGauge->reDraw();
+  //voltMeter->reDraw();
 
   initBatteryCheck(); 
   

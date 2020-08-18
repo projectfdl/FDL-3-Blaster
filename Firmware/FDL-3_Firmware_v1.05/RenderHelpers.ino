@@ -1,11 +1,13 @@
 
 void renderVoltMeter(){  
   if(firstMenuRun){
-    voltMeter->reDraw();
+    //voltMeter->reDraw();
+    // PARTY
   }
 
   float voltLevel = getVoltLevel();
-  voltMeter->setValue(voltLevel * 10);
+  //voltMeter->setValue(voltLevel * 10);
+  // PARTY
 
   if(speedLocked){
     renderLockIndicator();
@@ -77,7 +79,8 @@ void renderLockIndicator(){
   uView.setCursor(xLoc,0);
   uView.print("SL");
   uView.print(currStSettings.maxSpeed);
-  uView.setFontType(0);    
+  //PARTY
+  uView.setFont(0);    
 }
 
 void renderInfoMenu(){  
@@ -91,14 +94,15 @@ void renderInfoMenu(){
   uView.print(versionNum,2);  
   uView.display();
   firstMenuRun = false;
-  uView.setFontType(0);  
+  //PARTY
+  uView.setFont(0);  
 }
 
 void renderUserLock(){
 
   while(presetButtonDown() == PRSTROT){}
   
-  uView.clear(PAGE);  
+  uView.clearDisplay();  
   uView.setCursor(6,0);
   uView.print("User Lock");
   
@@ -151,7 +155,7 @@ void renderUserLock(){
       currStSettings.usrLock = usrLock;
       writeStaticSettings();
 
-      uView.clear(PAGE);
+      uView.clearDisplay();
       uView.setCursor(6,18);
       uView.print("Code Set");
       uView.setCursor(0,36);
@@ -168,7 +172,7 @@ void renderUserLock(){
         currStSettings.usrLock = 0;
         writeStaticSettings();
 
-        uView.clear(PAGE);
+        uView.clearDisplay();
         uView.setCursor(8,16);
         uView.print("Unlocked");
         uView.display();        
@@ -194,7 +198,7 @@ void renderUserLock(){
     delay(200);
   }
 
-  uView.clear(PAGE);
+  uView.clearDisplay();
   uView.display();  
 }
 
@@ -224,12 +228,16 @@ void renderKnobScrollMenu(){
     textLength++;
   }
 
-  int txtWidth = uView.getFontWidth() * (textLength + 1);
-  int txtHeight = uView.getFontHeight();
+  // PARTY
+  // PROBLEM!
+  //int txtWidth = uView.getFontWidth() * (textLength + 1);
+  //int txtHeight = uView.getFontHeight();
+  int txtWidth = 5 * (textLength + 1);
+  int txtHeight = 7;
   int availSpace = 56;
   int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
 
-  uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
+  //PARTY uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
   
   uView.setCursor(txtLocX,26);
   testPtr = knobMenu[knobMenuIndex];
@@ -240,7 +248,8 @@ void renderKnobScrollMenu(){
   
   uView.display();
   firstMenuRun = false;
-  uView.setFontType(0);  
+  //PARTY
+  uView.setFont(0);  
 }
 
 /////////////////
@@ -261,7 +270,8 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
   uView.setCursor(0,14);
   uView.print(label);
 
-  uView.setFontType(1);
+//PARTY
+  uView.setFont(1);
 
   int textLength = 0;
   const char* testPtr = menu[menuIndex];
@@ -269,12 +279,14 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
     textLength++;
   }
 
-  int txtWidth = uView.getFontWidth() * (textLength + 1);
-  int txtHeight = uView.getFontHeight();
+  //int txtWidth = uView.getFontWidth() * (textLength + 1);
+  //int txtHeight = uView.getFontHeight();
+  int txtWidth = 8 * (textLength + 1);
+  int txtHeight = 16;
   int availSpace = 56;
   int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
 
-  uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
+  //PARTY uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
   
   uView.setCursor(txtLocX, 26);
   testPtr = menu[menuIndex];
@@ -285,7 +297,8 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
   
   uView.display();
   firstMenuRun = false;
-  uView.setFontType(0);  
+  //PARTY
+  uView.setFont(0);  
 }
 
 
@@ -293,11 +306,12 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
 //gauge type settings
 /////////////////
 void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int valueMin, int valueMax, int detPerMove){
-  mainGauge->setMinValue(gaugeMin);
-  mainGauge->setMaxValue(gaugeMax);
+  //mainGauge->setMinValue(gaugeMin);
+  //mainGauge->setMaxValue(gaugeMax);
+  //PARTY 
   
   if(firstMenuRun){
-    mainGauge->reDraw();
+//PARTY     mainGauge->reDraw();
     firstMenuRun = false;
   }
 
@@ -318,19 +332,21 @@ void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int 
   if(gaugeValue < 10){ uView.print(" "); }
   if(gaugeValue < 100){ uView.print(" "); }
 
-  mainGauge->setValue(gaugeValue);
+//PARTY   mainGauge->setValue(gaugeValue);
   uView.display();
 }
 
 
 void renderSplash(String splashText){
-  uView.setFontType(1);
+  //PARTY
+  uView.setFont(1);
 
   int spaceIndex = splashText.indexOf(' ');
 
   if(spaceIndex == -1){
     int availSpace = 60;
-    int txtWidth = uView.getFontWidth() * splashText.length();
+    //int txtWidth = uView.getFontWidth() * splashText.length();
+    int txtWidth = 8 * splashText.length();
     int txtLocX = constrain((availSpace - txtWidth) / 2, 0, availSpace / 2);
   
     uView.setCursor(txtLocX,16);
@@ -347,14 +363,19 @@ void renderSplash(String splashText){
 
     int availSpace = 60;
 
+    int partyWidth = 5;
     if(sub1.length() > 7){
-      uView.setFontType(0);
+      //PARTY
+      uView.setFont(0);
     }
     else{
-      uView.setFontType(1);
+      //PARTY
+      uView.setFont(1);
+      partyWidth = 8;
     }
     
-    int txtWidth1 = uView.getFontWidth() * sub1.length();        
+    //int txtWidth1 = uView.getFontWidth() * sub1.length();       
+    int txtWidth1 = partyWidth * sub1.length();        
     int txtLocX1 = constrain((availSpace - txtWidth1) / 2, 0, availSpace / 2);    
   
     uView.setCursor(txtLocX1,10);
@@ -364,15 +385,21 @@ void renderSplash(String splashText){
       uView.display();
       delay(50);
     }
-
+    partyWidth = 5;
     if(sub2.length() > 7){
-      uView.setFontType(0);
+      //PARTY
+      uView.setFont(0);
+      
     }
     else{
-      uView.setFontType(1);
+      //PARTY
+      uView.setFont(1);
+      partyWidth = 8;
     }
-    
-    int txtWidth2 = uView.getFontWidth() * sub2.length();
+
+    // PARTY
+    //int txtWidth2 = uView.getFontWidth() * sub2.length();
+    int txtWidth2 = partyWidth * sub2.length();
     int txtLocX2 = constrain((availSpace - txtWidth2) / 2, 0, availSpace / 2);
 
     uView.setCursor(txtLocX2,24);
@@ -385,8 +412,9 @@ void renderSplash(String splashText){
   }
 
   delay(600);  
-  uView.setFontType(0);  
-  uView.clear(PAGE);
+  //PARTY
+  uView.setFont(0);  
+  uView.clearDisplay();
   uView.display();  
 }
 
@@ -403,7 +431,7 @@ void renderPresetMenu(){
     encoderChange = 0;
   }
 
-  uView.clear(PAGE);
+  uView.clearDisplay();
   if(presetMenuIndex > 0){
     renderPreset(presetMenuIndex);
   }
@@ -414,20 +442,24 @@ void renderPresetMenu(){
     
     uView.setCursor(0,14);
     uView.print("Load");
-  
-    uView.setFontType(1);
+
+  //PARTY
+    uView.setFont(1);
 
     int textLength = 0;
     const char* testPtr = presetMenu[presetMenuIndex];
     while(*(testPtr++) != '\0'){
       textLength++;
     }
-    int txtWidth = uView.getFontWidth() * (textLength + 1);
-    int txtHeight = uView.getFontHeight();
+    //PARTY
+    //int txtWidth = uView.getFontWidth() * (textLength + 1);
+    //int txtHeight = uView.getFontHeight();
+    int txtWidth = 7 * (textLength + 1);
+    int txtHeight = 16;
     int availSpace = 56;
     int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
   
-    uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
+    //PARTY uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
     
     uView.setCursor(txtLocX, 26);    
     testPtr = presetMenu[presetMenuIndex];
@@ -439,13 +471,15 @@ void renderPresetMenu(){
   
   uView.display();
   firstMenuRun = false;
-  uView.setFontType(0);  
+  //PARTY
+  uView.setFont(0);  
 }
 
 void renderPreset(byte preset){
   readPreset(preset);
 
-  uView.setFontType(0);    
+  //PARTY
+  uView.setFont(0);    
   uView.setCursor(0,0);
   uView.print(firemodeMenu[readBlSettings.fireMode]);  
   uView.setCursor(0,13);
@@ -471,9 +505,9 @@ void renderPreset(byte preset){
   uView.print("I:");
   uView.print(readBlSettings.idleTime);
 
-  uView.rectFill(57, 39, 8, 9, WHITE , NORM);
-  uView.setColor(BLACK);
+  //PARTY uView.rectFill(57, 39, 8, 9, WHITE , NORM);
+//PARTY   uView.setColor(BLACK);
   uView.setCursor(58,40);
   uView.print(preset);
-  uView.setColor(WHITE);
+//PARTY   uView.setColor(WHITE);
 }

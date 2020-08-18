@@ -79,7 +79,7 @@ void clearSetRoutine(){
       break;
     }
   }
-  uView.clear(PAGE);
+  uView.clearDisplay();
   uView.display();
 }
 
@@ -93,7 +93,7 @@ void clearLockRoutine(){
   currStSettings.usrLock = 0;
   writeStaticSettings();
 
-  uView.clear(PAGE);  
+  uView.clearDisplay();  
   uView.setCursor(10,16);
   uView.print("Unlocked");
   uView.display();        
@@ -105,6 +105,6 @@ void clearLockRoutine(){
   toneAlt(3000, 80);
   delay(100);
 
-  uView.clear(PAGE); 
+  uView.clearDisplay(); 
   uView.display(); 
 }
