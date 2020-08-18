@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:uno",
+    "port": "COM7",
+    "sketch": "FDL-3_Firmware_v1.05.ino"
+}
