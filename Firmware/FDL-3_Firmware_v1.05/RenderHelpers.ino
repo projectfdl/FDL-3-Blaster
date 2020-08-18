@@ -6,6 +6,7 @@ void renderVoltMeter(){
   }
 
   float voltLevel = getVoltLevel();
+  voltLevel = 11.0;
   //voltMeter->setValue(voltLevel * 10);
   // PARTY
 
@@ -79,23 +80,23 @@ void renderLockIndicator(){
   oled.setCursor(xLoc,0);
   oled.print("SL");
   oled.print(currStSettings.maxSpeed);
-  //PARTY
-  oled.setFont(0);    
+  oled.setTextSize(SMALL_T);
 }
 
 void renderInfoMenu(){  
-  oled.setCursor(0,14);
+  oled.setTextSize(LARGE_T);
+  oled.setCursor(0,OLED_HEADER);
   oled.print("Info");
-  oled.setCursor(0,26);
+  oled.setCursor(0,OLED_HEADER + (CH_LH + 2) * 1);
   oled.print("FDL-3");
-  oled.setCursor(0,38);
+  oled.setCursor(0,OLED_HEADER + (CH_LH + 2) * 2);
   oled.print("v");
   float versionNum = (float)versionNumber / 100;
   oled.print(versionNum,2);  
+  oled.print("A");
   oled.display();
   firstMenuRun = false;
-  //PARTY
-  oled.setFont(0);  
+  oled.setTextSize(SMALL_T);    
 }
 
 void renderUserLock(){
@@ -248,8 +249,7 @@ void renderKnobScrollMenu(){
   
   oled.display();
   firstMenuRun = false;
-  //PARTY
-  oled.setFont(0);  
+  oled.setTextSize(SMALL_T);    
 }
 
 /////////////////
@@ -271,7 +271,7 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
   oled.print(label);
 
 //PARTY
-  oled.setFont(1);
+    oled.setTextSize(LARGE_T);   
 
   int textLength = 0;
   const char* testPtr = menu[menuIndex];
@@ -297,8 +297,7 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
   
   oled.display();
   firstMenuRun = false;
-  //PARTY
-  oled.setFont(0);  
+  oled.setTextSize(SMALL_T);    
 }
 
 
@@ -315,7 +314,7 @@ void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int 
     firstMenuRun = false;
   }
 
-  oled.setCursor(0,4);
+  oled.setCursor(0,0);
   oled.print(label);
     
   encoderChange += myEnc.read();
@@ -327,7 +326,7 @@ void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int 
     encoderChange = 0;
   }
 
-  oled.setCursor(30,40);    
+  oled.setCursor(OLED_WIDTH / 2 - 1.5 * CH_LW, OLED_HEIGHT - CH_LH);    
   oled.print(gaugeValue);
   if(gaugeValue < 10){ oled.print(" "); }
   if(gaugeValue < 100){ oled.print(" "); }
@@ -437,28 +436,23 @@ void renderPresetMenu(){
     if(speedLocked){ renderLockIndicator(); }  
     renderVoltMeter();
     
-    oled.setCursor(0,14);
+    oled.setCursor(0,OLED_HEADER);
     oled.print("Load");
 
-  //PARTY
-    oled.setFont(1);
-
+    oled.setTextSize(LARGE_T);   
+    
     int textLength = 0;
     const char* testPtr = presetMenu[presetMenuIndex];
     while(*(testPtr++) != '\0'){
       textLength++;
     }
-    //PARTY
-    //int txtWidth = oled.getFontWidth() * (textLength + 1);
-    //int txtHeight = oled.getFontHeight();
-    int txtWidth = 7 * (textLength + 1);
-    int txtHeight = 16;
-    int availSpace = 56;
-    int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
+    int txtWidth = CH_LW * (textLength + 1);
+    int txtHeight = CH_LH;
+    int txtLocX = constrain((OLED_WIDTH - txtWidth) / 2 - 1, 0, OLED_WIDTH / 2);
   
     //PARTY oled.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
     
-    oled.setCursor(txtLocX, 26);    
+    oled.setCursor(txtLocX, OLED_HEADER);    
     testPtr = presetMenu[presetMenuIndex];
     while(*testPtr != '\0'){
       oled.print(*testPtr);
@@ -468,43 +462,43 @@ void renderPresetMenu(){
   
   oled.display();
   firstMenuRun = false;
-  //PARTY
-  oled.setFont(0);  
+  oled.setTextSize(SMALL_T);    
 }
 
 void renderPreset(byte preset){
   readPreset(preset);
 
-  //PARTY
-  oled.setFont(0);    
-  oled.setCursor(0,0);
+  oled.clearDisplay();
+  oled.setTextSize(SMALL_T);      
+  oled.setCursor(0,OLED_HEADER);
   oled.print(firemodeMenu[readBlSettings.fireMode]);  
-  oled.setCursor(0,13);
+  oled.setCursor(0,OLED_HEADER + (CH_SH + 3) * 1);
   oled.print("S:");
   oled.print(readBlSettings.speedValue);  
-  oled.setCursor(0,26);
+  oled.setCursor(0,OLED_HEADER + (CH_SH + 3) * 2);
   oled.print("B:");
   oled.print(burstMenu[readBlSettings.burstCount]);  
-  oled.setCursor(0,39);
+  oled.setCursor(0,OLED_HEADER + (CH_SH + 3) * 3);
   oled.print("R:");
   oled.print(readBlSettings.rofValue);  
 
-  oled.setCursor(32,0);
+  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER);
   oled.print("p:");
   oled.print(readBlSettings.minSpinup);
-  oled.setCursor(32,13);
+  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER + (CH_SH + 3) * 1);
   oled.print("P:");
   oled.print(readBlSettings.maxSpinup);
-  oled.setCursor(32,26);
+  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER + (CH_SH + 3) * 2);
   oled.print("D:");
   oled.print(readBlSettings.spinDown);
-  oled.setCursor(32,39);
+  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER + (CH_SH + 3) * 3);
   oled.print("I:");
   oled.print(readBlSettings.idleTime);
 
   //PARTY oled.rectFill(57, 39, 8, 9, WHITE , NORM);
 //PARTY   oled.setColor(BLACK);
-  oled.setCursor(58,40);
+  oled.setCursor(0,0);
+  oled.setTextSize(LARGE_T);
+  oled.print("Preset: ");
   oled.print(preset);
-//PARTY   oled.setColor(WHITE);
 }

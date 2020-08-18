@@ -2,15 +2,13 @@
 ///RENDER////
 /////////////
 void renderScreen(){
-  
-  int contrastValue = map(currStSettings.brightness, 0, 100, 0, 255);
- //PARTY  uView.contrast(contrastValue);
-  
-  renderVoltMeter();
     
+  renderVoltMeter();
+  
   if(liveKnobScrollMode){
     renderKnobScrollMenu();
   }
+  /*
   else{
     switch(knobMenuIndex){
       case 0:
@@ -76,7 +74,7 @@ void renderScreen(){
         break;
     }
   }  
-
+  
   //look for rot switch or preset press
   int presetButton = presetButtonDown();
 
@@ -124,7 +122,7 @@ void renderScreen(){
   }
   else{
     menuBtnWasDown = false;
-  }  
+  }  */
 }
 
 void presetButtonAction(int presButton){

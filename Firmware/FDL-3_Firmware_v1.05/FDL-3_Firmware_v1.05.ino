@@ -18,7 +18,7 @@
 #include <EEPROM.h>
 #include <Servo.h>
 
-const byte versionNumber = 1051;
+const byte versionNumber = 105;
 const String splashText = "FDL-3 Arduino"; //can be two lines split with space
 
 Servo flywheelESC; 
@@ -33,6 +33,7 @@ Encoder myEnc(2, 3);
 #define OLED_RESET  8
 #define OLED_WIDTH  128
 #define OLED_HEIGHT 64
+#define OLED_HEADER 16
 #define SMALL_T     1
 #define LARGE_T     2
 #define CH_SH       7
@@ -138,7 +139,6 @@ BlastSettings lastBlSettings = { 50, 100, 0, 220, 220, 14, 0, 1 };
 BlastSettings readBlSettings = { 50, 100, 0, 220, 220, 14, 0, 1 };
 BlastSettings defBlSettings = { 50, 100, 0, 220, 220, 14, 0, 1 };
 
-
 void setup() {
   oled.begin();
   oled.clearDisplay();
@@ -148,15 +148,12 @@ void setup() {
   oled.setCursor(0, 0);     // Start at top-left corner
   oled.cp437(true);         // Use full 256 char 'Code Page 437' font
 
-  oled.clearDisplay();
-  oled.print("TEST");
-  oled.display();
-  delay(1000);
 
+  // Setup ESC
   flywheelESC.attach(escPin); 
   flywheelESC.writeMicroseconds(0);  
 
-
+  // Setup Pin Modes
   pinMode(voltMeterPin, INPUT);
   pinMode(presetBtnPin, INPUT);
   pinMode(pusherSwitchPin, INPUT);
@@ -165,9 +162,8 @@ void setup() {
   pinMode(pusherEnablePin, OUTPUT);
   pinMode(pusherBrakePin, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
-  
 
-
+  oled.clearDisplay();
   renderSplash(splashText);  
   loadSettings();
   
@@ -196,7 +192,7 @@ void setup() {
   else{
     flywheelESC.writeMicroseconds(NOTHROTTLE);
     
-    //renderScreen();
+    renderScreen();
     startUpBeeps();
     
     if(lockOn()){
@@ -210,7 +206,6 @@ void setup() {
 }
 
 void loop() {
-/*
   if(currStSettings.usrLock != 0){
     renderUserLock();
     return;
@@ -237,12 +232,13 @@ void loop() {
    
   spinDownFW(false);  
   renderScreen();
-
+/*
   if(lastSettingsSave != 0 && millis() - lastSettingsSave < 2000){
      //don't save
   }
   else{
     if(currentSettingsChanged() || staticSettingsChanged()){
+      // PARTY
       writeCurrentSettings();
       writeStaticSettings();
       lastSettingsSave = millis();      
