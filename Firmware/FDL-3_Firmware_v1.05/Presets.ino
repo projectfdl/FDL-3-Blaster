@@ -108,15 +108,15 @@ void loadPreset(byte presetIndex){
 }
 
 void writeDefaultSettings(){  
-  uView.clearDisplay();
-  uView.setCursor(0,0);
-  uView.print("Updating");
-  uView.setCursor(0,14);
-  uView.print("settings");
-  uView.setCursor(0,28);
+  oled.clearDisplay();
+  oled.setCursor(0,0);
+  oled.print("Updating");
+  oled.setCursor(0,14);
+  oled.print("settings");
+  oled.setCursor(0,28);
   float versionNum = (float)versionNumber / 100;
-  uView.print(versionNum,2);
-  uView.display();  
+  oled.print(versionNum,2);
+  oled.display();  
   
   //write defaults to all 
   EEPROM.put(0, versionNumber);
@@ -143,6 +143,6 @@ void writeDefaultSettings(){
   toneAlt(2000, 200);
   delay(100);
   
-  uView.clearDisplay();
-  uView.display();
+  oled.clearDisplay();
+  oled.display();
 }

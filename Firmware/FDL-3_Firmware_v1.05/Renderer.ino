@@ -102,7 +102,7 @@ void renderScreen(){
           liveKnobScrollMode = true;
         }
         
-        uView.clearDisplay();
+        oled.clearDisplay();
         firstMenuRun = true;
         myEnc.write(0);
       }
@@ -115,7 +115,7 @@ void renderScreen(){
         if(presetButtonDown() == presetButton){
           presetButtonAction(presetButton);
           menuBtnWasDown = true;
-          uView.clearDisplay();
+          oled.clearDisplay();
           firstMenuRun = true;
           myEnc.write(0);
         }
