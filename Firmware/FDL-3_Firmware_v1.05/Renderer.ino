@@ -2,13 +2,16 @@
 ///RENDER////
 /////////////
 void renderScreen(){
-    
+
+  // PARTY
+  return;
+
   renderVoltMeter();
-  
+
   if(liveKnobScrollMode){
     renderKnobScrollMenu();
   }
-  /*
+  
   else{
     switch(knobMenuIndex){
       case 0:
@@ -74,7 +77,7 @@ void renderScreen(){
         break;
     }
   }  
-  
+  /*
   //look for rot switch or preset press
   int presetButton = presetButtonDown();
 

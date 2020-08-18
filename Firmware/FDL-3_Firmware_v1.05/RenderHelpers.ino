@@ -221,6 +221,7 @@ void renderKnobScrollMenu(){
   }
 
   oled.setCursor(0,0);
+  oled.setTextSize(LARGE_T);
   oled.print("Mode");
 
   int textLength = 0;
@@ -229,18 +230,13 @@ void renderKnobScrollMenu(){
     textLength++;
   }
 
-  // PARTY
-  // PROBLEM!
-  //int txtWidth = oled.getFontWidth() * (textLength + 1);
-  //int txtHeight = oled.getFontHeight();
-  int txtWidth = 5 * (textLength + 1);
-  int txtHeight = 7;
-  int availSpace = 56;
-  int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
-
-  //PARTY oled.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
+  int txtWidth = CH_LW * (textLength + 1);
+  int txtHeight = CH_LH;
+  int txtLocX = constrain((OLED_WIDTH - txtWidth) / 2 - 1, 0, OLED_WIDTH / 2);
+  int txtLocY = constrain((OLED_HEIGHT - txtHeight) / 2 - 1, 0, OLED_HEIGHT / 2);
+  oled.fillRect(0, OLED_HEADER, OLED_WIDTH, OLED_HEIGHT - OLED_HEADER, BLACK);
   
-  oled.setCursor(txtLocX,26);
+  oled.setCursor(txtLocX,txtLocY);
   testPtr = knobMenu[knobMenuIndex];
   while(*testPtr != '\0'){
     oled.print(*testPtr);

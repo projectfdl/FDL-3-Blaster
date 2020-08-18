@@ -4,7 +4,13 @@
  Libraries used:
  
  Adafruit SSD1306 Library
- http://www.adafruit.com/category/63_98
+ https://github.com/adafruit/Adafruit_SSD1306
+ Copyright (c) 2012, Adafruit Industries. All rights reserved.
+  
+ Adafruit GFX Library
+ https://github.com/adafruit/Adafruit-GFX-Library
+ Copyright (c) 2012, Adafruit Industries. All rights reserved.
+
  
  Encoder Library, for measuring quadrature encoded signals
  http://www.pjrc.com/teensy/td_libs_Encoder.html
@@ -15,6 +21,7 @@
 #include <Wire.h>
 #include <Encoder.h>
 #include <Adafruit_SSD1306.h>
+#include <Adafruit_GFX.h>
 #include <EEPROM.h>
 #include <Servo.h>
 
