@@ -19,7 +19,7 @@
 #include <Servo.h>
 
 const byte versionNumber = 1051;
-const String splashText = "FDL-3"; //can be two lines split with space
+const String splashText = "FDL-3 Arduino"; //can be two lines split with space
 
 Servo flywheelESC; 
 Encoder myEnc(2, 3); 
@@ -30,8 +30,16 @@ Encoder myEnc(2, 3);
 // OLED DEF
 #define OLED_DC     9
 #define OLED_CS     7
-#define OLED_RS     8
-Adafruit_SSD1306 uView(128,64, &SPI, OLED_DC, OLED_RS, OLED_CS);
+#define OLED_RESET  8
+#define OLED_WIDTH  128
+#define OLED_HEIGHT 64
+#define SMALL_T     1
+#define LARGE_T     2
+#define CH_SH       7
+#define CH_LH       14
+#define CH_SW       5
+#define CH_LW       10
+Adafruit_SSD1306 oled(OLED_WIDTH,OLED_HEIGHT, &SPI, OLED_DC, OLED_RESET, OLED_CS);
 
 #define NOTHROTTLE 1000
 #define MINTHROTTLE 1285
@@ -132,13 +140,22 @@ BlastSettings defBlSettings = { 50, 100, 0, 220, 220, 14, 0, 1 };
 
 
 void setup() {
-  
+  oled.begin();
+  oled.clearDisplay();
+  oled.display();
+  oled.setTextSize(LARGE_T);   
+  oled.setTextColor(SSD1306_WHITE); // Draw white text
+  oled.setCursor(0, 0);     // Start at top-left corner
+  oled.cp437(true);         // Use full 256 char 'Code Page 437' font
+
+  oled.clearDisplay();
+  oled.print("TEST");
+  oled.display();
+  delay(1000);
+
   flywheelESC.attach(escPin); 
   flywheelESC.writeMicroseconds(0);  
 
-  uView.begin();// start MicroView
-  uView.clearDisplay();
-  uView.display();
 
   pinMode(voltMeterPin, INPUT);
   pinMode(presetBtnPin, INPUT);
@@ -148,17 +165,19 @@ void setup() {
   pinMode(pusherEnablePin, OUTPUT);
   pinMode(pusherBrakePin, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
+  
+
 
   renderSplash(splashText);  
   loadSettings();
-
+  
   if(presetButtonDown() == 4){
     int tmpLocVal = currStSettings.usrLock;
     clearSetRoutine();
     currStSettings.usrLock = tmpLocVal;
     writeStaticSettings();
   }
-
+  
   if(lockOn() && presetButtonDown() == 3){
     clearLockRoutine();
   }
@@ -170,14 +189,14 @@ void setup() {
   //voltMeter->reDraw();
 
   initBatteryCheck(); 
-  
+
   if(currStSettings.usrLock != 0){
     renderUserLock();
   }
   else{
     flywheelESC.writeMicroseconds(NOTHROTTLE);
     
-    renderScreen();
+    //renderScreen();
     startUpBeeps();
     
     if(lockOn()){
@@ -191,7 +210,7 @@ void setup() {
 }
 
 void loop() {
-
+/*
   if(currStSettings.usrLock != 0){
     renderUserLock();
     return;
@@ -228,5 +247,5 @@ void loop() {
       writeStaticSettings();
       lastSettingsSave = millis();      
     }
-  }
+  }*/
 }
