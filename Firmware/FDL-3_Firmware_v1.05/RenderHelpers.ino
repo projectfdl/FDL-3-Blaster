@@ -263,11 +263,11 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
     encoderChange = 0;
   }
 
-  oled.setCursor(0,14);
+  oled.setTextSize(LARGE_T); 
+  oled.setCursor(0,0);
   oled.print(label);
 
-//PARTY
-    oled.setTextSize(LARGE_T);   
+      
 
   int textLength = 0;
   const char* testPtr = menu[menuIndex];
@@ -275,16 +275,13 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
     textLength++;
   }
 
-  //int txtWidth = oled.getFontWidth() * (textLength + 1);
-  //int txtHeight = oled.getFontHeight();
-  int txtWidth = 8 * (textLength + 1);
-  int txtHeight = 16;
-  int availSpace = 56;
-  int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
+  int txtWidth = CH_LW * (textLength + 1);
+  int txtHeight = CH_LH;
+  int txtLocX = constrain((OLED_WIDTH - txtWidth) / 2 - 1, 0, OLED_WIDTH / 2);
+  int txtLocY = constrain((OLED_HEIGHT - txtHeight) / 2 - 1, 0, OLED_HEIGHT / 2);
 
-  //PARTY oled.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
-  
-  oled.setCursor(txtLocX, 26);
+  oled.fillRect(0, txtLocY, OLED_WIDTH, txtLocY + txtHeight, BLACK);  
+  oled.setCursor(txtLocX, txtLocY);
   testPtr = menu[menuIndex];
   while(*testPtr != '\0'){
     oled.print(*testPtr);
@@ -311,6 +308,7 @@ void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int 
   }
 
   oled.setCursor(0,0);
+  oled.setTextSize(LARGE_T);
   oled.print(label);
     
   encoderChange += myEnc.read();
@@ -322,7 +320,8 @@ void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int 
     encoderChange = 0;
   }
 
-  oled.setCursor(OLED_WIDTH / 2 - 1.5 * CH_LW, OLED_HEIGHT - CH_LH);    
+  oled.setCursor(OLED_WIDTH / 2 - 1.5 * CH_LW, OLED_HEIGHT - CH_LH);
+  oled.fillRect(0, OLED_HEIGHT - CH_LH, OLED_WIDTH, CH_LH, BLACK);    
   oled.print(gaugeValue);
   if(gaugeValue < 10){ oled.print(" "); }
   if(gaugeValue < 100){ oled.print(" "); }
