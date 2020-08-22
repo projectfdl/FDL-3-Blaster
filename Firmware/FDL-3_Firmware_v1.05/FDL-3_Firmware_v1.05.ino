@@ -35,9 +35,9 @@ Encoder myEnc(2, 3);
 //PARTY
 
 // OLED DEF
-#define OLED_DC     9
-#define OLED_CS     7
-#define OLED_RESET  8
+#define OLED_DC     8
+#define OLED_CS     10
+#define OLED_RESET  7
 #define OLED_WIDTH  128
 #define OLED_HEIGHT 64
 #define OLED_HEADER 16
@@ -47,7 +47,7 @@ Encoder myEnc(2, 3);
 #define CH_LH       14
 #define CH_SW       5
 #define CH_LW       10
-Adafruit_SSD1306 oled(OLED_WIDTH,OLED_HEIGHT, &SPI, OLED_DC, OLED_RESET, OLED_CS);
+Adafruit_SSD1306 oled(OLED_WIDTH,OLED_HEIGHT, &SPI, OLED_DC, OLED_RESET, OLED_CS, 4000000UL);
 
 #define NOTHROTTLE 1000
 #define MINTHROTTLE 1285
@@ -155,7 +155,6 @@ void setup() {
   oled.setCursor(0, 0);     // Start at top-left corner
   oled.cp437(true);         // Use full 256 char 'Code Page 437' font
 
-
   // Setup ESC
   flywheelESC.attach(escPin); 
   flywheelESC.writeMicroseconds(0);  
@@ -213,6 +212,7 @@ void setup() {
 }
 
 void loop() {
+
   if(currStSettings.usrLock != 0){
     renderUserLock();
     return;
@@ -239,7 +239,7 @@ void loop() {
    
   spinDownFW(false);  
   renderScreen();
-/*
+
   if(lastSettingsSave != 0 && millis() - lastSettingsSave < 2000){
      //don't save
   }
@@ -250,5 +250,5 @@ void loop() {
       writeStaticSettings();
       lastSettingsSave = millis();      
     }
-  }*/
+  }
 }

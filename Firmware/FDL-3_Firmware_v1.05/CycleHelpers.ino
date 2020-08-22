@@ -137,6 +137,15 @@ boolean lockOn(){
 int presetButtonDown(){
   int readVal = analogRead(presetBtnPin);
 
+  // PARTY
+  // THIS IS ONLY FOR DEBUG BUILDUP!!!!
+  if(readVal > 600)
+    return PRSTNONE;
+  else
+  {
+    return PRSTROT;
+  }
+  // ENDPARTY
   if(readVal < 400){
     return PRSTNONE;
   }

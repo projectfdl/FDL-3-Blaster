@@ -103,16 +103,17 @@ void renderUserLock(){
 
   while(presetButtonDown() == PRSTROT){}
   
-  oled.clearDisplay();  
-  oled.setCursor(6,0);
+  oled.clearDisplay();
+  oled.setTextSize(LARGE_T);  
+  oled.setCursor(0,0);
   oled.print("User Lock");
   
   if(currStSettings.usrLock == 0){
-    oled.setCursor(9,20);
+    oled.setCursor(0,OLED_HEADER);
     oled.print("Set");
   }
   else{
-    oled.setCursor(3,20);
+    oled.setCursor(0,OLED_HEADER);
     oled.print("Enter");
   }
   oled.print(" Code");
@@ -142,7 +143,7 @@ void renderUserLock(){
     usrLock += prstBut;
 
     if(usrLock > 0){
-      oled.setCursor(0,36);  
+      oled.setCursor(0,OLED_HEADER + CH_LH + 4);  
       oled.print(usrLock);
       oled.display();
     }
@@ -410,6 +411,10 @@ void renderSplash(String splashText){
 }
 
 void renderPresetMenu(){
+  //PARTY
+  return;
+
+  
   encoderChange += myEnc.read();
   myEnc.write(0);
 
