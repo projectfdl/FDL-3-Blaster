@@ -29,8 +29,8 @@ MicroViewWidget *voltMeter;
 #define MAXTHROTTLE 2000
 
 //PINS
-#define pusherBrakePin 9
-#define pusherEnablePin 12
+#define pusherBrakePin 0
+#define pusherEnablePin 1
 #define escPin 5
 #define buzzerPin 6
 #define triggerPin A0
