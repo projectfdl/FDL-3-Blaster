@@ -1,61 +1,36 @@
 /*
  FDL-3 Firmware v1.05 by Project FDL
-                v1.05.1 by Mathew3000
+
  Libraries used:
  
- Adafruit SSD1306 Library
- https://github.com/adafruit/Adafruit_SSD1306
- Copyright (c) 2012, Adafruit Industries. All rights reserved.
-  
- Adafruit GFX Library
- https://github.com/adafruit/Adafruit-GFX-Library
- Copyright (c) 2012, Adafruit Industries. All rights reserved.
-
+ MicroView Arduino Library
+ Copyright (C) 2014 GeekAmmo
  
  Encoder Library, for measuring quadrature encoded signals
  http://www.pjrc.com/teensy/td_libs_Encoder.html
  Copyright (c) 2011,2013 PJRC.COM, LLC - Paul Stoffregen <paul@pjrc.com>
 */
 
-#include <SPI.h>
-#include <Wire.h>
+#include <MicroView.h>
 #include <Encoder.h>
-#include <Adafruit_SSD1306.h>
-#include <Adafruit_GFX.h>
 #include <EEPROM.h>
 #include <Servo.h>
 
 const byte versionNumber = 105;
-const String splashText = "FDL-3 Arduino"; //can be two lines split with space
+const String splashText = "FDL-3"; //can be two lines split with space
 
 Servo flywheelESC; 
 Encoder myEnc(2, 3); 
-//MicroViewWidget *mainGauge;
-//MicroViewWidget *voltMeter;
-//PARTY
-
-// OLED DEF
-#define OLED_DC     8
-#define OLED_CS     10
-#define OLED_RESET  7
-#define OLED_WIDTH  128
-#define OLED_HEIGHT 64
-#define OLED_HEADER 16
-#define SMALL_T     1
-#define LARGE_T     2
-#define CH_SH       7
-#define CH_LH       14
-#define CH_SW       5
-#define CH_LW       10
-Adafruit_SSD1306 oled(OLED_WIDTH,OLED_HEIGHT, &SPI, OLED_DC, OLED_RESET, OLED_CS, 4000000UL);
+MicroViewWidget *mainGauge;
+MicroViewWidget *voltMeter;
 
 #define NOTHROTTLE 1000
 #define MINTHROTTLE 1285
 #define MAXTHROTTLE 2000
 
 //PINS
-#define pusherBrakePin 0
-#define pusherEnablePin 1
+#define pusherBrakePin 9
+#define pusherEnablePin 12
 #define escPin 5
 #define buzzerPin 6
 #define triggerPin A0
@@ -146,20 +121,16 @@ BlastSettings lastBlSettings = { 50, 100, 0, 220, 220, 14, 0, 1 };
 BlastSettings readBlSettings = { 50, 100, 0, 220, 220, 14, 0, 1 };
 BlastSettings defBlSettings = { 50, 100, 0, 220, 220, 14, 0, 1 };
 
-void setup() {
-  oled.begin();
-  oled.clearDisplay();
-  oled.display();
-  oled.setTextSize(LARGE_T);   
-  oled.setTextColor(SSD1306_WHITE); // Draw white text
-  oled.setCursor(0, 0);     // Start at top-left corner
-  oled.cp437(true);         // Use full 256 char 'Code Page 437' font
 
-  // Setup ESC
+void setup() {
+  
   flywheelESC.attach(escPin); 
   flywheelESC.writeMicroseconds(0);  
 
-  // Setup Pin Modes
+  uView.begin();// start MicroView
+  uView.clear(PAGE);
+  uView.display();
+
   pinMode(voltMeterPin, INPUT);
   pinMode(presetBtnPin, INPUT);
   pinMode(pusherSwitchPin, INPUT);
@@ -169,29 +140,28 @@ void setup() {
   pinMode(pusherBrakePin, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
 
-  oled.clearDisplay();
   renderSplash(splashText);  
   loadSettings();
-  
+
   if(presetButtonDown() == 4){
     int tmpLocVal = currStSettings.usrLock;
     clearSetRoutine();
     currStSettings.usrLock = tmpLocVal;
     writeStaticSettings();
   }
-  
+
   if(lockOn() && presetButtonDown() == 3){
     clearLockRoutine();
   }
 
-  //PARTY
-  //mainGauge = new MicroViewGauge(16, 30, 0, 100, WIDGETSTYLE0 + WIDGETNOVALUE);
-  //voltMeter = new MicroViewSlider(56, 14, 106, 126, WIDGETSTYLE2 + WIDGETNOVALUE);
-  //mainGauge->reDraw();
-  //voltMeter->reDraw();
+  mainGauge = new MicroViewGauge(16, 30, 0, 100, WIDGETSTYLE0 + WIDGETNOVALUE);
+  voltMeter = new MicroViewSlider(56, 14, 106, 126, WIDGETSTYLE2 + WIDGETNOVALUE);
+
+  mainGauge->reDraw();
+  voltMeter->reDraw();
 
   initBatteryCheck(); 
-
+  
   if(currStSettings.usrLock != 0){
     renderUserLock();
   }
@@ -245,7 +215,6 @@ void loop() {
   }
   else{
     if(currentSettingsChanged() || staticSettingsChanged()){
-      // PARTY
       writeCurrentSettings();
       writeStaticSettings();
       lastSettingsSave = millis();      

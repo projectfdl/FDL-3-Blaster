@@ -1,24 +1,21 @@
 
 void renderVoltMeter(){  
   if(firstMenuRun){
-    //voltMeter->reDraw();
-    // PARTY
+    voltMeter->reDraw();
   }
 
   float voltLevel = getVoltLevel();
-  voltLevel = 11.0;
-  //voltMeter->setValue(voltLevel * 10);
-  // PARTY
+  voltMeter->setValue(voltLevel * 10);
 
   if(speedLocked){
     renderLockIndicator();
   }
   else{
-    oled.setCursor(41,0);
+    uView.setCursor(41,0);
     if(voltLevel < 10){
-      oled.print("0");
+      uView.print("0");
     }
-    oled.print(voltLevel,1);    
+    uView.print(voltLevel,1);    
   }
    
   if(voltLevel < 10.8){
@@ -53,8 +50,8 @@ void renderVoltMeter(){
     }
   }
   
-  oled.setCursor(56,39);
-  oled.print("B");    
+  uView.setCursor(56,39);
+  uView.print("B");    
 }
 
 void batteryWarning(){
@@ -77,47 +74,44 @@ void renderLockIndicator(){
   int xLoc = 34;
   if(currStSettings.maxSpeed < 100){ xLoc = 40; }
   if(currStSettings.maxSpeed < 10){ xLoc = 46; }  
-  oled.setCursor(xLoc,0);
-  oled.print("SL");
-  oled.print(currStSettings.maxSpeed);
-  oled.setTextSize(SMALL_T);
+  uView.setCursor(xLoc,0);
+  uView.print("SL");
+  uView.print(currStSettings.maxSpeed);
+  uView.setFontType(0);    
 }
 
 void renderInfoMenu(){  
-  oled.setTextSize(LARGE_T);
-  oled.setCursor(0,OLED_HEADER);
-  oled.print("Info");
-  oled.setCursor(0,OLED_HEADER + (CH_LH + 2) * 1);
-  oled.print("FDL-3");
-  oled.setCursor(0,OLED_HEADER + (CH_LH + 2) * 2);
-  oled.print("v");
+  uView.setCursor(0,14);
+  uView.print("Info");
+  uView.setCursor(0,26);
+  uView.print("FDL-3");
+  uView.setCursor(0,38);
+  uView.print("v");
   float versionNum = (float)versionNumber / 100;
-  oled.print(versionNum,2);  
-  oled.print("A");
-  oled.display();
+  uView.print(versionNum,2);  
+  uView.display();
   firstMenuRun = false;
-  oled.setTextSize(SMALL_T);    
+  uView.setFontType(0);  
 }
 
 void renderUserLock(){
 
   while(presetButtonDown() == PRSTROT){}
   
-  oled.clearDisplay();
-  oled.setTextSize(LARGE_T);  
-  oled.setCursor(0,0);
-  oled.print("User Lock");
+  uView.clear(PAGE);  
+  uView.setCursor(6,0);
+  uView.print("User Lock");
   
   if(currStSettings.usrLock == 0){
-    oled.setCursor(0,OLED_HEADER);
-    oled.print("Set");
+    uView.setCursor(9,20);
+    uView.print("Set");
   }
   else{
-    oled.setCursor(0,OLED_HEADER);
-    oled.print("Enter");
+    uView.setCursor(3,20);
+    uView.print("Enter");
   }
-  oled.print(" Code");
-  oled.display();
+  uView.print(" Code");
+  uView.display();
 
   if(currStSettings.usrLock == 0){
     toneAlt(2400, 80);
@@ -143,9 +137,9 @@ void renderUserLock(){
     usrLock += prstBut;
 
     if(usrLock > 0){
-      oled.setCursor(0,OLED_HEADER + CH_LH + 4);  
-      oled.print(usrLock);
-      oled.display();
+      uView.setCursor(0,36);  
+      uView.print(usrLock);
+      uView.display();
     }
   }
   delay(300);
@@ -157,12 +151,12 @@ void renderUserLock(){
       currStSettings.usrLock = usrLock;
       writeStaticSettings();
 
-      oled.clearDisplay();
-      oled.setCursor(6,18);
-      oled.print("Code Set");
-      oled.setCursor(0,36);
-      oled.print(currStSettings.usrLock);
-      oled.display();      
+      uView.clear(PAGE);
+      uView.setCursor(6,18);
+      uView.print("Code Set");
+      uView.setCursor(0,36);
+      uView.print(currStSettings.usrLock);
+      uView.display();      
       
       toneAlt(1600, 80);
       delay(50);
@@ -174,10 +168,10 @@ void renderUserLock(){
         currStSettings.usrLock = 0;
         writeStaticSettings();
 
-        oled.clearDisplay();
-        oled.setCursor(8,16);
-        oled.print("Unlocked");
-        oled.display();        
+        uView.clear(PAGE);
+        uView.setCursor(8,16);
+        uView.print("Unlocked");
+        uView.display();        
         
         toneAlt(2400, 80);
         delay(30);
@@ -200,8 +194,8 @@ void renderUserLock(){
     delay(200);
   }
 
-  oled.clearDisplay();
-  oled.display();  
+  uView.clear(PAGE);
+  uView.display();  
 }
 
 /////////////////
@@ -221,9 +215,8 @@ void renderKnobScrollMenu(){
     toneAlt(2000,10);
   }
 
-  oled.setCursor(0,0);
-  oled.setTextSize(LARGE_T);
-  oled.print("Mode");
+  uView.setCursor(0,0);
+  uView.print("Mode");
 
   int textLength = 0;
   const char* testPtr = knobMenu[knobMenuIndex];
@@ -231,22 +224,23 @@ void renderKnobScrollMenu(){
     textLength++;
   }
 
-  int txtWidth = CH_LW * (textLength + 1);
-  int txtHeight = CH_LH;
-  int txtLocX = constrain((OLED_WIDTH - txtWidth) / 2 - 1, 0, OLED_WIDTH / 2);
-  int txtLocY = constrain((OLED_HEIGHT - txtHeight) / 2 - 1, 0, OLED_HEIGHT / 2);
-  oled.fillRect(0, OLED_HEADER, OLED_WIDTH, OLED_HEIGHT - OLED_HEADER, BLACK);
+  int txtWidth = uView.getFontWidth() * (textLength + 1);
+  int txtHeight = uView.getFontHeight();
+  int availSpace = 56;
+  int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
+
+  uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
   
-  oled.setCursor(txtLocX,txtLocY);
+  uView.setCursor(txtLocX,26);
   testPtr = knobMenu[knobMenuIndex];
   while(*testPtr != '\0'){
-    oled.print(*testPtr);
+    uView.print(*testPtr);
     testPtr++;
   }
   
-  oled.display();
+  uView.display();
   firstMenuRun = false;
-  oled.setTextSize(SMALL_T);    
+  uView.setFontType(0);  
 }
 
 /////////////////
@@ -264,11 +258,10 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
     encoderChange = 0;
   }
 
-  oled.setTextSize(LARGE_T); 
-  oled.setCursor(0,0);
-  oled.print(label);
+  uView.setCursor(0,14);
+  uView.print(label);
 
-      
+  uView.setFontType(1);
 
   int textLength = 0;
   const char* testPtr = menu[menuIndex];
@@ -276,22 +269,23 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
     textLength++;
   }
 
-  int txtWidth = CH_LW * (textLength + 1);
-  int txtHeight = CH_LH;
-  int txtLocX = constrain((OLED_WIDTH - txtWidth) / 2 - 1, 0, OLED_WIDTH / 2);
-  int txtLocY = constrain((OLED_HEIGHT - txtHeight) / 2 - 1, 0, OLED_HEIGHT / 2);
+  int txtWidth = uView.getFontWidth() * (textLength + 1);
+  int txtHeight = uView.getFontHeight();
+  int availSpace = 56;
+  int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
 
-  oled.fillRect(0, txtLocY, OLED_WIDTH, txtLocY + txtHeight, BLACK);  
-  oled.setCursor(txtLocX, txtLocY);
+  uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
+  
+  uView.setCursor(txtLocX, 26);
   testPtr = menu[menuIndex];
   while(*testPtr != '\0'){
-    oled.print(*testPtr);
+    uView.print(*testPtr);
     testPtr++;
   } 
   
-  oled.display();
+  uView.display();
   firstMenuRun = false;
-  oled.setTextSize(SMALL_T);    
+  uView.setFontType(0);  
 }
 
 
@@ -299,18 +293,16 @@ void renderMenu(byte &menuIndex, const char label[], const char* menu[], byte ar
 //gauge type settings
 /////////////////
 void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int valueMin, int valueMax, int detPerMove){
-  //mainGauge->setMinValue(gaugeMin);
-  //mainGauge->setMaxValue(gaugeMax);
-  //PARTY 
+  mainGauge->setMinValue(gaugeMin);
+  mainGauge->setMaxValue(gaugeMax);
   
   if(firstMenuRun){
-//PARTY     mainGauge->reDraw();
+    mainGauge->reDraw();
     firstMenuRun = false;
   }
 
-  oled.setCursor(0,0);
-  oled.setTextSize(LARGE_T);
-  oled.print(label);
+  uView.setCursor(0,4);
+  uView.print(label);
     
   encoderChange += myEnc.read();
   myEnc.write(0);
@@ -321,33 +313,31 @@ void renderGauge(int &gaugeValue, String label, int gaugeMin, int gaugeMax, int 
     encoderChange = 0;
   }
 
-  oled.setCursor(OLED_WIDTH / 2 - 1.5 * CH_LW, OLED_HEIGHT - CH_LH);
-  oled.fillRect(0, OLED_HEIGHT - CH_LH, OLED_WIDTH, CH_LH, BLACK);    
-  oled.print(gaugeValue);
-  if(gaugeValue < 10){ oled.print(" "); }
-  if(gaugeValue < 100){ oled.print(" "); }
+  uView.setCursor(30,40);    
+  uView.print(gaugeValue);
+  if(gaugeValue < 10){ uView.print(" "); }
+  if(gaugeValue < 100){ uView.print(" "); }
 
-//PARTY   mainGauge->setValue(gaugeValue);
-  oled.display();
+  mainGauge->setValue(gaugeValue);
+  uView.display();
 }
 
 
 void renderSplash(String splashText){
-
-  oled.setTextSize(LARGE_T);
+  uView.setFontType(1);
 
   int spaceIndex = splashText.indexOf(' ');
 
   if(spaceIndex == -1){
-    int txtWidth = CH_LW * (splashText.length() + 1) ;
-    int txtLocX = constrain((OLED_WIDTH - txtWidth) / 2, 0, OLED_WIDTH / 2);
-    int txtLocY = constrain((OLED_HEIGHT - CH_LH) / 2, 0, OLED_HEIGHT / 2);
+    int availSpace = 60;
+    int txtWidth = uView.getFontWidth() * splashText.length();
+    int txtLocX = constrain((availSpace - txtWidth) / 2, 0, availSpace / 2);
   
-    oled.setCursor(txtLocX,txtLocY);
+    uView.setCursor(txtLocX,16);
   
     for(int i = 0; i < splashText.length(); i++){
-      oled.print(splashText[i]);
-      oled.display();
+      uView.print(splashText[i]);
+      uView.display();
       delay(50);
     }
   }
@@ -355,66 +345,52 @@ void renderSplash(String splashText){
     String sub1 = splashText.substring(0, spaceIndex);
     String sub2 = splashText.substring(spaceIndex + 1);
 
-    int charWidth = CH_LW;
-    int charHeight = CH_LH;
+    int availSpace = 60;
 
-    if(sub1.length() * CH_LW > OLED_WIDTH){
-      oled.setTextSize(SMALL_T);
-      charWidth = CH_SW;
-      charHeight = CH_SH;
+    if(sub1.length() > 7){
+      uView.setFontType(0);
     }
     else{
-      oled.setTextSize(LARGE_T);
+      uView.setFontType(1);
     }
     
-    int txtWidth1 = charWidth * (sub1.length() + 1);        
-    int txtLocX1 = constrain((OLED_WIDTH - txtWidth1) / 2, 0, OLED_WIDTH / 2);    
-    int txtLocY1 = constrain((OLED_HEIGHT - charHeight) / 2, 0, OLED_HEIGHT / 2);
-    txtLocY1 -= (charHeight/2 + 1);
-
-    oled.setCursor(txtLocX1,txtLocY1);
+    int txtWidth1 = uView.getFontWidth() * sub1.length();        
+    int txtLocX1 = constrain((availSpace - txtWidth1) / 2, 0, availSpace / 2);    
+  
+    uView.setCursor(txtLocX1,10);
   
     for(int i = 0; i < sub1.length(); i++){
-      oled.print(sub1[i]);
-      oled.display();
+      uView.print(sub1[i]);
+      uView.display();
       delay(50);
     }
-    charWidth = 5;
-    if(sub2.length() * CH_LW > OLED_WIDTH){
-      oled.setTextSize(SMALL_T);
-      charWidth = CH_SW;
-      charHeight = CH_SH;
+
+    if(sub2.length() > 7){
+      uView.setFontType(0);
     }
     else{
-      oled.setTextSize(LARGE_T);
-      charWidth = CH_LW;
-      charHeight = CH_LH;
+      uView.setFontType(1);
     }
+    
+    int txtWidth2 = uView.getFontWidth() * sub2.length();
+    int txtLocX2 = constrain((availSpace - txtWidth2) / 2, 0, availSpace / 2);
 
-    int txtWidth2 = charWidth * (sub2.length()+1);
-    int txtLocX2 = constrain((OLED_WIDTH - txtWidth2) / 2, 0, OLED_WIDTH / 2);    
-    int txtLocY2 = constrain((OLED_HEIGHT - charHeight) / 2, 0, OLED_HEIGHT / 2);
-    txtLocY2 += charHeight/2 + 1;
-
-    oled.setCursor(txtLocX2,txtLocY2);
+    uView.setCursor(txtLocX2,24);
   
     for(int i = 0; i < sub2.length(); i++){
-      oled.print(sub2[i]);
-      oled.display();
+      uView.print(sub2[i]);
+      uView.display();
       delay(50);
     }
   }
 
   delay(600);  
-  oled.clearDisplay();
-  oled.display();  
+  uView.setFontType(0);  
+  uView.clear(PAGE);
+  uView.display();  
 }
 
 void renderPresetMenu(){
-  //PARTY
-  return;
-
-  
   encoderChange += myEnc.read();
   myEnc.write(0);
 
@@ -427,7 +403,7 @@ void renderPresetMenu(){
     encoderChange = 0;
   }
 
-  oled.clearDisplay();
+  uView.clear(PAGE);
   if(presetMenuIndex > 0){
     renderPreset(presetMenuIndex);
   }
@@ -436,69 +412,68 @@ void renderPresetMenu(){
     if(speedLocked){ renderLockIndicator(); }  
     renderVoltMeter();
     
-    oled.setCursor(0,OLED_HEADER);
-    oled.print("Load");
+    uView.setCursor(0,14);
+    uView.print("Load");
+  
+    uView.setFontType(1);
 
-    oled.setTextSize(LARGE_T);   
-    
     int textLength = 0;
     const char* testPtr = presetMenu[presetMenuIndex];
     while(*(testPtr++) != '\0'){
       textLength++;
     }
-    int txtWidth = CH_LW * (textLength + 1);
-    int txtHeight = CH_LH;
-    int txtLocX = constrain((OLED_WIDTH - txtWidth) / 2 - 1, 0, OLED_WIDTH / 2);
+    int txtWidth = uView.getFontWidth() * (textLength + 1);
+    int txtHeight = uView.getFontHeight();
+    int availSpace = 56;
+    int txtLocX = constrain((availSpace - txtWidth) / 2 - 1, 0, availSpace / 2);
   
-    //PARTY oled.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
+    uView.rectFill(0, 26, 55, 26 + txtHeight, BLACK, NORM);
     
-    oled.setCursor(txtLocX, OLED_HEADER);    
+    uView.setCursor(txtLocX, 26);    
     testPtr = presetMenu[presetMenuIndex];
     while(*testPtr != '\0'){
-      oled.print(*testPtr);
+      uView.print(*testPtr);
       testPtr++;
     } 
   }
   
-  oled.display();
+  uView.display();
   firstMenuRun = false;
-  oled.setTextSize(SMALL_T);    
+  uView.setFontType(0);  
 }
 
 void renderPreset(byte preset){
   readPreset(preset);
 
-  oled.clearDisplay();
-  oled.setTextSize(SMALL_T);      
-  oled.setCursor(0,OLED_HEADER);
-  oled.print(firemodeMenu[readBlSettings.fireMode]);  
-  oled.setCursor(0,OLED_HEADER + (CH_SH + 3) * 1);
-  oled.print("S:");
-  oled.print(readBlSettings.speedValue);  
-  oled.setCursor(0,OLED_HEADER + (CH_SH + 3) * 2);
-  oled.print("B:");
-  oled.print(burstMenu[readBlSettings.burstCount]);  
-  oled.setCursor(0,OLED_HEADER + (CH_SH + 3) * 3);
-  oled.print("R:");
-  oled.print(readBlSettings.rofValue);  
+  uView.setFontType(0);    
+  uView.setCursor(0,0);
+  uView.print(firemodeMenu[readBlSettings.fireMode]);  
+  uView.setCursor(0,13);
+  uView.print("S:");
+  uView.print(readBlSettings.speedValue);  
+  uView.setCursor(0,26);
+  uView.print("B:");
+  uView.print(burstMenu[readBlSettings.burstCount]);  
+  uView.setCursor(0,39);
+  uView.print("R:");
+  uView.print(readBlSettings.rofValue);  
 
-  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER);
-  oled.print("p:");
-  oled.print(readBlSettings.minSpinup);
-  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER + (CH_SH + 3) * 1);
-  oled.print("P:");
-  oled.print(readBlSettings.maxSpinup);
-  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER + (CH_SH + 3) * 2);
-  oled.print("D:");
-  oled.print(readBlSettings.spinDown);
-  oled.setCursor(OLED_WIDTH / 2,OLED_HEADER + (CH_SH + 3) * 3);
-  oled.print("I:");
-  oled.print(readBlSettings.idleTime);
+  uView.setCursor(32,0);
+  uView.print("p:");
+  uView.print(readBlSettings.minSpinup);
+  uView.setCursor(32,13);
+  uView.print("P:");
+  uView.print(readBlSettings.maxSpinup);
+  uView.setCursor(32,26);
+  uView.print("D:");
+  uView.print(readBlSettings.spinDown);
+  uView.setCursor(32,39);
+  uView.print("I:");
+  uView.print(readBlSettings.idleTime);
 
-  //PARTY oled.rectFill(57, 39, 8, 9, WHITE , NORM);
-//PARTY   oled.setColor(BLACK);
-  oled.setCursor(0,0);
-  oled.setTextSize(LARGE_T);
-  oled.print("Preset: ");
-  oled.print(preset);
+  uView.rectFill(57, 39, 8, 9, WHITE , NORM);
+  uView.setColor(BLACK);
+  uView.setCursor(58,40);
+  uView.print(preset);
+  uView.setColor(WHITE);
 }

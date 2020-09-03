@@ -2,71 +2,72 @@
 ///RENDER////
 /////////////
 void renderScreen(){
-
-  // PARTY
-  //renderVoltMeter();
-
+  
+  int contrastValue = map(currStSettings.brightness, 0, 100, 0, 255);
+  uView.contrast(contrastValue);
+  
+  renderVoltMeter();
+    
   if(liveKnobScrollMode){
     renderKnobScrollMenu();
   }
-  
   else{
     switch(knobMenuIndex){
       case 0:
         renderGauge(currBlSettings.speedValue, "Speed", 0, 100, currStSettings.minSpeed, currStSettings.maxSpeed, 1);
         break;
       case 1:
-        //renderGauge(currBlSettings.rofValue, "ROF", 0, 100, 0, 100, 1);
+        renderGauge(currBlSettings.rofValue, "ROF", 0, 100, 0, 100, 1);
         break;
       case 2:
-        //renderMenu(currBlSettings.burstCount, "Burst", burstMenu, sizeof(burstMenu) / sizeof(size_t));
+        renderMenu(currBlSettings.burstCount, "Burst", burstMenu, sizeof(burstMenu) / sizeof(size_t));
         break;
       case 3:
-        //renderGauge(currBlSettings.minSpinup, "MinSpn", 150, 500, 150, 500, 1);
+        renderGauge(currBlSettings.minSpinup, "MinSpn", 150, 500, 150, 500, 1);
         break;
       case 4:
-        //renderGauge(currBlSettings.maxSpinup, "MaxSpn", 150, 500, 150, 500, 1);
+        renderGauge(currBlSettings.maxSpinup, "MaxSpn", 150, 500, 150, 500, 1);
         break;
       case 5:
-        //renderMenu(currBlSettings.fireMode, "FireMode", firemodeMenu, sizeof(firemodeMenu) / sizeof(size_t));
+        renderMenu(currBlSettings.fireMode, "FireMode", firemodeMenu, sizeof(firemodeMenu) / sizeof(size_t));
         break;  
       case 6:
-        //renderGauge(currBlSettings.spinDown, "SpnDwn", 6, 25, 6, 25, 8);
+        renderGauge(currBlSettings.spinDown, "SpnDwn", 6, 25, 6, 25, 8);
         break;
       case 7:
-        //renderGauge(currBlSettings.idleTime, "Idle", 0, 10, 0, 10, 8);
+        renderGauge(currBlSettings.idleTime, "Idle", 0, 10, 0, 10, 8);
         break;    
       case 8:
-        //renderPresetMenu();
+        renderPresetMenu();
         break;
       case 9:
-        //renderMenu(presetMenuIndex, "Save", presetMenu, sizeof(presetMenu) / sizeof(size_t));
+        renderMenu(presetMenuIndex, "Save", presetMenu, sizeof(presetMenu) / sizeof(size_t));
         break;
       case 10:
-        //renderGauge(currStSettings.minSpeed, "MinSpd", 0, 100, 0, currStSettings.maxSpeed, 1);
+        renderGauge(currStSettings.minSpeed, "MinSpd", 0, 100, 0, currStSettings.maxSpeed, 1);
         break;
       case 11:
         if(!speedLocked){
-          //renderGauge(currStSettings.maxSpeed, "MaxSpd", 0, 100, currStSettings.minSpeed, 100, 1);
+          renderGauge(currStSettings.maxSpeed, "MaxSpd", 0, 100, currStSettings.minSpeed, 100, 1);
         }
         break; 
       case 12:
-        //renderMenu(currStSettings.btnMode, "Btn Mode", btnmodeMenu, sizeof(btnmodeMenu) / sizeof(size_t));
+        renderMenu(currStSettings.btnMode, "Btn Mode", btnmodeMenu, sizeof(btnmodeMenu) / sizeof(size_t));
         break;
       case 13:
-        //renderGauge(currStSettings.brkAgr, "BrkAgr", 3, 25, 3, 25, 8);
+        renderGauge(currStSettings.brkAgr, "BrkAgr", 3, 25, 3, 25, 8);
         break;
       case 14:
-        //renderUserLock();
+        renderUserLock();
         break;
       case 15:
-        //renderGauge(currStSettings.brightness, "Bright", 0, 100, 0, 100, 1);
+        renderGauge(currStSettings.brightness, "Bright", 0, 100, 0, 100, 1);
         break;
       case 16:
-        //renderMenu(currStSettings.soundOn, "Sound", soundMenu, sizeof(soundMenu) / sizeof(size_t));
+        renderMenu(currStSettings.soundOn, "Sound", soundMenu, sizeof(soundMenu) / sizeof(size_t));
         break;
       case 17:
-        //renderGauge(currStSettings.batOffset, "BatOff", -8, 8, -8, 8, 8);
+        renderGauge(currStSettings.batOffset, "BatOff", -8, 8, -8, 8, 8);
         break;
       case 18:
         renderInfoMenu();
@@ -75,7 +76,7 @@ void renderScreen(){
         break;
     }
   }  
-  
+
   //look for rot switch or preset press
   int presetButton = presetButtonDown();
 
@@ -101,7 +102,7 @@ void renderScreen(){
           liveKnobScrollMode = true;
         }
         
-        oled.clearDisplay();
+        uView.clear(PAGE);
         firstMenuRun = true;
         myEnc.write(0);
       }
@@ -114,7 +115,7 @@ void renderScreen(){
         if(presetButtonDown() == presetButton){
           presetButtonAction(presetButton);
           menuBtnWasDown = true;
-          oled.clearDisplay();
+          uView.clear(PAGE);
           firstMenuRun = true;
           myEnc.write(0);
         }
@@ -123,7 +124,7 @@ void renderScreen(){
   }
   else{
     menuBtnWasDown = false;
-  } 
+  }  
 }
 
 void presetButtonAction(int presButton){

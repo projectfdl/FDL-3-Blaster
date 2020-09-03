@@ -64,13 +64,13 @@ void clearSetRoutine(){
   while(presetButtonDown() == 4){};
   delay(50);
   
-  oled.setCursor(0,0);
-  oled.print("Click knob");
-  oled.setCursor(0,14);
-  oled.print("to clear");
-  oled.setCursor(0,28);
-  oled.print("settings");
-  oled.display();
+  uView.setCursor(0,0);
+  uView.print("Click knob");
+  uView.setCursor(0,14);
+  uView.print("to clear");
+  uView.setCursor(0,28);
+  uView.print("settings");
+  uView.display();
 
   long currMills = millis();
   while(millis() < currMills + 2000){
@@ -79,8 +79,8 @@ void clearSetRoutine(){
       break;
     }
   }
-  oled.clearDisplay();
-  oled.display();
+  uView.clear(PAGE);
+  uView.display();
 }
 
 void clearLockRoutine(){
@@ -93,10 +93,10 @@ void clearLockRoutine(){
   currStSettings.usrLock = 0;
   writeStaticSettings();
 
-  oled.clearDisplay();  
-  oled.setCursor(10,16);
-  oled.print("Unlocked");
-  oled.display();        
+  uView.clear(PAGE);  
+  uView.setCursor(10,16);
+  uView.print("Unlocked");
+  uView.display();        
   
   toneAlt(2400, 80);
   delay(30);
@@ -105,6 +105,6 @@ void clearLockRoutine(){
   toneAlt(3000, 80);
   delay(100);
 
-  oled.clearDisplay(); 
-  oled.display(); 
+  uView.clear(PAGE); 
+  uView.display(); 
 }
